@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>한국공학대학교 연구성과 포털 | TU Korea Research Portal</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'Roboto', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              500: '#0284c7',
+              600: '#0369a1',
+              700: '#1e3a8a',
+              800: '#172554',
+              900: '#0b132b',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&display=swap');
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Pretendard', sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+    }
+    .frosted-glass {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .card-clean {
+      background: #ffffff;
+      border: 1px solid #f1f5f9;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .card-clean:hover {
+      border-color: #cbd5e1;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px -6px rgba(15, 23, 42, 0.08);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
+
+  <!-- Top Global Bar -->
+  <div class="bg-slate-900 text-slate-300 text-[11px] py-1.5 px-4 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="inline-flex items-center gap-1.5 text-blue-400 font-medium">
+          <span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span>
+          반월·시화 국가산업단지 배후 국내 최대 공학 특화 산학연 포털
+        </span>
+      </div>
+      <div class="hidden sm:flex items-center gap-4 text-slate-400">
+        <span>한국공학대학교 산학협력단</span>
+        <span>•</span>
+        <span>TU-제조AX혁신지원단</span>
+        <span>•</span>
+        <span>5T 기업협업센터(ICC)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header & Navigation -->
+  <header class="sticky top-0 z-40 frosted-glass border-b border-slate-200/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-extrabold text-lg shadow-sm group-hover:bg-blue-700 transition">
+          TU
+        </div>
+        <div>
+          <div class="font-extrabold text-base sm:text-lg text-slate-900 tracking-tight flex items-center gap-2">
+            한국공학대학교 <span class="text-[11px] font-semibold px-2 py-0.5 bg-blue-50 text-blue-600 rounded-md border border-blue-200/60">연구성과 포털</span>
+          </div>
+          <div class="text-[11px] text-slate-500 font-medium tracking-tight">Tech University of Korea • Research & AX Innovation</div>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 text-xs lg:text-sm font-semibold text-slate-600">
+        <a href="#stats" class="px-3 py-1.5 rounded-lg hover:text-blue-600 hover:bg-slate-100 transition">핵심 지표</a>
+        <a href="#research" class="px-3 py-1.5 rounded-lg hover:text-blue-600 hover:bg-slate-100 transition">최신 연구 성과</a>
+        <a href="#centers" class="px-3 py-1.5 rounded-lg hover:text-blue-600 hover:bg-slate-100 transition">5T ICC & 오픈랩</a>
+        <a href="#growth" class="px-3 py-1.5 rounded-lg hover:text-blue-600 hover:bg-slate-100 transition">산학 성장 추이</a>
+      </nav>
+
+      <!-- Action Button -->
+      <div class="flex items-center gap-2">
+        <button onclick="openInquiryModal()" class="inline-flex items-center gap-1.5 px-4 py-2 text-xs sm:text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 rounded-xl shadow-sm transition">
+          <i data-lucide="send" class="w-3.5 h-3.5"></i>
+          <span>기술이전·연구 문의</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Banner with Campus Photo -->
+  <section class="relative bg-slate-900 text-white overflow-hidden">
+    <!-- Campus Image as Background with Cinematic Overlay -->
+    <div class="absolute inset-0 z-0">
+      <img src="campus.jpg" alt="한국공학대학교 캠퍼스 전경" class="w-full h-full object-cover object-center filter brightness-[0.42] scale-105 transform hover:scale-100 transition duration-1000 ease-out" />
+      <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+    </div>
+
+    <!-- Hero Content -->
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-32">
+      <div class="max-w-2xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs text-sky-300 font-medium mb-6">
+          <i data-lucide="map-pin" class="w-3.5 h-3.5 text-sky-400"></i>
+          <span>한국공학대학교 제1캠퍼스 전경 & 첨단 연구 인프라</span>
+        </div>
+
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.2] text-white">
+          산업과 미래를 선도하는 <br>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-sky-300 to-white">한국공학대학교 연구 성과</span>
+        </h1>
+
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed mt-5 max-w-xl font-normal">
+          반월·시화 국가산단 제조 AX 허브, 다이아몬드 우주 반도체 원천기술부터 중대형 기술이전 및 5T ICC 기업협업센터까지, 대한민국 실전 공학의 미래를 한눈에 살펴보세요.
+        </p>
+
+        <!-- Search Input Bar -->
+        <div class="mt-8 bg-white/95 backdrop-blur-md p-1.5 sm:p-2 rounded-2xl shadow-xl flex flex-col sm:flex-row gap-2 max-w-xl border border-white/20">
+          <div class="flex-1 flex items-center pl-3">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 mr-2 flex-shrink-0"></i>
+            <input type="text" id="searchInput" oninput="filterResearch()" placeholder="연구명, 교수진, 키워드(AI, 반도체, 로봇, 레이저 등) 검색" class="w-full text-xs sm:text-sm text-slate-900 bg-transparent outline-none placeholder-slate-400">
+          </div>
+          <button onclick="filterResearch()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-xl transition shadow-sm">
+            성과 검색
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Statistics Banner (Clean Card Style) -->
+  <section id="stats" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      
+      <div class="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-sm flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="cpu" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <div class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">280억 원</div>
+          <div class="text-xs text-slate-500 font-medium">제조 AX 허브 국책사업</div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-sm flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="sparkles" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <div class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">201억 원</div>
+          <div class="text-xs text-slate-500 font-medium">다이아몬드 우주 반도체 R&D</div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-sm flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="users" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <div class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">11,000+</div>
+          <div class="text-xs text-slate-500 font-medium">산학협력 기업 앵커조사</div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-sm flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="arrow-up-right" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <div class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">6.4억+</div>
+          <div class="text-xs text-slate-500 font-medium">최근 중대형 기술이전 계약</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Main Content Area -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full space-y-20">
+    
+    <!-- Section 1: Research Cards Gallery -->
+    <section id="research">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4 pb-4 border-b border-slate-200">
+        <div>
+          <div class="text-xs font-bold uppercase tracking-wider text-blue-600 mb-1">Latest Innovations</div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">최근 핵심 연구 및 산학 성과</h2>
+          <p class="text-xs sm:text-sm text-slate-500 mt-1">국가 전략 R&D 과제, 특허 기술이전, 인공지능 제조혁신 실증 사례</p>
+        </div>
+
+        <!-- Filter Pill Buttons -->
+        <div class="flex flex-wrap gap-1.5" id="filterButtons">
+          <button onclick="filterCategory('all')" class="filter-btn active px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-white transition shadow-sm" data-category="all">전체</button>
+          <button onclick="filterCategory('ai-mfg')" class="filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition" data-category="ai-mfg">제조 AX · 로봇</button>
+          <button onclick="filterCategory('semiconductor')" class="filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition" data-category="semiconductor">차세대 반도체</button>
+          <button onclick="filterCategory('transfer')" class="filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition" data-category="transfer">중대형 기술이전</button>
+          <button onclick="filterCategory('bio-ce')" class="filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition" data-category="bio-ce">지산학 · 바이오</button>
+        </div>
+      </div>
+
+      <!-- Research Cards Grid -->
+      <div id="researchGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Rendered dynamically by JavaScript -->
+      </div>
+    </section>
+
+    <!-- Section 2: 5T ICC & Open Lab Showcase (Clean Minimal Dark Section) -->
+    <section id="centers" class="bg-slate-900 rounded-3xl p-8 sm:p-12 text-white relative overflow-hidden">
+      <div class="max-w-3xl mb-10">
+        <span class="text-xs font-bold uppercase tracking-wider text-sky-400">Collaborative Center & Infrastructure</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight mt-1">5대 첨단 특화 5T ICC 및 AX 실증 오픈랩</h2>
+        <p class="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed">
+          한국공학대학교는 반월·시화 국가산단의 제조 디지털 전환을 이끄는 산학협력 허브로서 5대 특화 분야 기업협업센터(ICC)와 장비 실증 오픈랩을 연계 운영하고 있습니다.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Item 1 -->
+        <div class="bg-slate-800/90 border border-slate-700/80 p-6 rounded-2xl hover:border-sky-500/80 transition group">
+          <div class="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center mb-4 group-hover:bg-sky-500 group-hover:text-white transition">
+            <i data-lucide="layers" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-bold text-base text-white">차세대 반도체 패키징 ICC</h3>
+          <p class="text-xs text-slate-300 mt-2.5 leading-relaxed">
+            첨단 패키징 설계 및 공정 해석, 초미세 공정 원천기술 개발과 공용장비 인프라를 통한 기업 시제품 평가 및 양산 검증.
+          </p>
+          <div class="mt-4 pt-3 border-t border-slate-700/60 text-[11px] text-sky-400 font-medium">연계: 반도체공학과, 알키미스트 사업단</div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="bg-slate-800/90 border border-slate-700/80 p-6 rounded-2xl hover:border-emerald-500/80 transition group">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-4 group-hover:bg-emerald-500 group-hover:text-white transition">
+            <i data-lucide="leaf" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-bold text-base text-white">탄소중립 스마트에너지 ICC</h3>
+          <p class="text-xs text-slate-300 mt-2.5 leading-relaxed">
+            뿌리산업 및 제조공장 에너지 관리시스템(FEMS), 저탄소 연소 기술, 친환경 공정 전환 및 탄소배출 모니터링 실증.
+          </p>
+          <div class="mt-4 pt-3 border-t border-slate-700/60 text-[11px] text-emerald-400 font-medium">연계: 에너지·전기공학과, 넷제로 사업단</div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="bg-slate-800/90 border border-slate-700/80 p-6 rounded-2xl hover:border-purple-500/80 transition group">
+          <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center mb-4 group-hover:bg-purple-500 group-hover:text-white transition">
+            <i data-lucide="bot" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-bold text-base text-white">AX 실증산단 오픈랩 & DX ICC</h3>
+          <p class="text-xs text-slate-300 mt-2.5 leading-relaxed">
+            자율이동로봇(AMR), AI 비전 검사 시스템, 협동로봇의 제조 현장 적용 전 사전 타당성 및 호환성 종합 실증 테스트베드.
+          </p>
+          <div class="mt-4 pt-3 border-t border-slate-700/60 text-[11px] text-purple-400 font-medium">연계: TU-제조AX혁신지원단 (280억 사업)</div>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="bg-slate-800/90 border border-slate-700/80 p-6 rounded-2xl hover:border-blue-500/80 transition group">
+          <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center mb-4 group-hover:bg-blue-500 group-hover:text-white transition">
+            <i data-lucide="car" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-bold text-base text-white">미래 모빌리티 ICC</h3>
+          <p class="text-xs text-slate-300 mt-2.5 leading-relaxed">
+            전기차·자율주행 제어 플랫폼, 배터리 열관리 시스템, 지능형 전장 부품 및 모빌리티 샤시 시뮬레이션 기술 지원.
+          </p>
+          <div class="mt-4 pt-3 border-t border-slate-700/60 text-[11px] text-blue-400 font-medium">연계: 미래자동차공학부, 전장 협력사 네트워크</div>
+        </div>
+
+        <!-- Item 5 -->
+        <div class="bg-slate-800/90 border border-slate-700/80 p-6 rounded-2xl hover:border-pink-500/80 transition group">
+          <div class="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center mb-4 group-hover:bg-pink-500 group-hover:text-white transition">
+            <i data-lucide="heart-pulse" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-bold text-base text-white">첨단 바이오·디지털 헬스케어 ICC</h3>
+          <p class="text-xs text-slate-300 mt-2.5 leading-relaxed">
+            관절 센서 결합 웨어러블 디바이스, 모션캡처 디지털 트윈 트레이닝, 바이오 메디컬 기기 성능 검증 및 산학 공동 연구.
+          </p>
+          <div class="mt-4 pt-3 border-t border-slate-700/60 text-[11px] text-pink-400 font-medium">연계: 생명화학공학과, 스마트헬스케어센터</div>
+        </div>
+
+        <!-- Item 6 -->
+        <div class="bg-slate-800/90 border border-slate-700/80 p-6 rounded-2xl hover:border-amber-500/80 transition group">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center mb-4 group-hover:bg-amber-500 group-hover:text-white transition">
+            <i data-lucide="box" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-bold text-base text-white">공정혁신 시뮬레이션 센터</h3>
+          <p class="text-xs text-slate-300 mt-2.5 leading-relaxed">
+            고성능 클라우드 HPC 기반 버추얼 엔지니어링을 통해 중소기업의 제품 설계·구조 해석 기간을 최대 70% 단축.
+          </p>
+          <div class="mt-4 pt-3 border-t border-slate-700/60 text-[11px] text-amber-400 font-medium">연계: 지역혁신 RISE 체계, 공정해석 인프라</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Growth & Inquiry Area (Clean Split Layout) -->
+    <section id="growth" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+      <!-- Chart Column -->
+      <div class="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <div>
+              <div class="text-xs font-bold uppercase tracking-wider text-blue-600">R&D Performance</div>
+              <h3 class="font-extrabold text-xl text-slate-900">산학협력 R&D 수주 및 기술이전 추이</h3>
+            </div>
+            <span class="text-xs font-semibold px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-lg border border-emerald-200/60">연평균 +28%</span>
+          </div>
+          <p class="text-xs text-slate-500 mb-6">정부 국책 R&D 프로젝트 및 민간 산업체 기술이전 실적 (단위: 억 원)</p>
+        </div>
+        <div class="h-64 sm:h-72 w-full">
+          <canvas id="rdTrendChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Clean Partnership CTA Column -->
+      <div class="lg:col-span-5 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-sm flex flex-col justify-between">
+        <div>
+          <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4">
+            <i data-lucide="handshake" class="w-5 h-5"></i>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900">원스톱 산학협력 파트너십</h3>
+          <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+            한국공학대학교 산학협력단은 유망 특허 발굴, 기술이전 계약, 시제품 제작 및 오픈랩 사전 검증까지 기업 성장을 맞춤 지원합니다.
+          </p>
+
+          <div class="mt-6 space-y-3">
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-start gap-3">
+              <i data-lucide="check-circle-2" class="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0"></i>
+              <div>
+                <div class="text-xs font-bold text-slate-900">TLO 혁신지원</div>
+                <div class="text-[11px] text-slate-500">지식재산권 기술가치평가 및 선급기술료 연계 매칭</div>
+              </div>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-start gap-3">
+              <i data-lucide="check-circle-2" class="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0"></i>
+              <div>
+                <div class="text-xs font-bold text-slate-900">제조 AX 오픈랩 실증</div>
+                <div class="text-[11px] text-slate-500">자율이동로봇(AMR) 및 AI 비전 도입 전 현장 테스트베드 지원</div>
+              </div>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-start gap-3">
+              <i data-lucide="check-circle-2" class="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0"></i>
+              <div>
+                <div class="text-xs font-bold text-slate-900">가족회사 & RISE R&D</div>
+                <div class="text-[11px] text-slate-500">1만 1천여 기업 네트워크 및 정부 공동 R&D 지원사업 연계</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button onclick="openInquiryModal()" class="w-full mt-6 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs py-3 rounded-xl transition flex items-center justify-center gap-2">
+          <i data-lucide="message-square" class="w-4 h-4"></i>
+          <span>기술이전 및 공동 연구 상담 신청</span>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Clean Modal: Research Detail -->
+  <div id="detailModal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 shadow-2xl relative border border-slate-200">
+      <button onclick="closeModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-100 transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- Clean Modal: Contact Inquiry -->
+  <div id="inquiryModal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative border border-slate-200">
+      <button onclick="closeInquiryModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 p-2 rounded-full hover:bg-slate-100 transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+      
+      <div class="flex items-center gap-3 mb-5">
+        <div class="p-2.5 bg-blue-50 text-blue-600 rounded-xl">
+          <i data-lucide="send" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h3 class="font-bold text-base text-slate-900">산학협력 및 기술이전 문의</h3>
+          <p class="text-xs text-slate-500">한국공학대학교 산학협력단 / TU-제조AX혁신지원단</p>
+        </div>
+      </div>
+
+      <form id="inquiryForm" onsubmit="submitInquiry(event)" class="space-y-3.5 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">기업명 / 소속 기관</label>
+          <input required type="text" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-blue-600 text-xs text-slate-800 transition" placeholder="예: (주)테크솔루션">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">담당자 성함</label>
+            <input required type="text" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-blue-600 text-xs text-slate-800 transition" placeholder="홍길동">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">연락처</label>
+            <input required type="tel" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-blue-600 text-xs text-slate-800 transition" placeholder="010-0000-0000">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">관심 성과 및 협력 분야</label>
+          <select class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-blue-600 text-xs text-slate-800 bg-white transition">
+            <option>반월·시화 제조 AX 허브 실증 (AI·로봇 도입)</option>
+            <option>다이아몬드 기반 우주용 반도체 원천기술</option>
+            <option>AI 기반 레이저 노이즈 저감 특허 기술이전</option>
+            <option>운영체제 이중화 및 데이터 무중단 복구 기술이전</option>
+            <option>웨어러블 모션캡처 디지털 트윈 트레이닝</option>
+            <option>5T ICC 공용장비 및 시제품 제작 지원</option>
+            <option>기타 산학 공동 R&D 협력</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">문의 내용</label>
+          <textarea rows="3" class="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl outline-none focus:border-blue-600 text-xs text-slate-800 transition" placeholder="필요하신 기술 요구사항이나 협력 방안을 작성해주세요."></textarea>
+        </div>
+
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition text-xs shadow-sm mt-3">
+          상담 접수하기
+        </button>
+      </form>
+
+      <div id="inquirySuccess" class="hidden text-center py-6">
+        <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3">
+          <i data-lucide="check" class="w-6 h-6"></i>
+        </div>
+        <h4 class="font-bold text-slate-900 text-base">문의가 성공적으로 접수되었습니다.</h4>
+        <p class="text-xs text-slate-500 mt-1">한국공학대학교 산학협력단 담당 연구진이 검토 후 신속히 안내해 드리겠습니다.</p>
+        <button onclick="closeInquiryModal()" class="mt-4 px-5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-medium text-xs">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 border-t border-slate-800 text-slate-400 py-10 mt-auto text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-sm">TU</div>
+        <div>
+          <div class="text-slate-200 font-semibold text-sm">한국공학대학교 산학협력단 / TU-제조AX혁신지원단</div>
+          <div class="text-slate-500 text-xs">경기도 시흥시 산기대학로 237 (정왕동) 한국공학대학교</div>
+        </div>
+      </div>
+      <div class="text-center md:text-right text-slate-500">
+        <p>© 2026 Tech University of Korea. All Rights Reserved.</p>
+        <p class="mt-0.5">반월·시화 국가산업단지 배후 국내 최대 공학·산학융합 혁신 플랫폼</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Logic -->
+  <script>
+    // Research Dataset
+    const researchData = [
+      {
+        id: 'ax-hub',
+        title: '반월·시화형 AI 제조혁신 실증을 위한 AX 허브 구축',
+        category: 'ai-mfg',
+        categoryLabel: '제조 AX · 로봇',
+        scale: '총 사업비 280억 원 (산업통상자원부 주관)',
+        lead: 'TU-제조AX혁신지원단',
+        summary: '중소 제조기업의 AI 및 로봇 현장 도입을 위한 AX실증산단 오픈랩 가동 및 자율이동로봇(AMR) 공정 실증 사전 검증 체계 구축.',
+        highlights: [
+          '반월·시화 산단 1만 1천여 협력사 대상 전수조사 연계',
+          '자율이동로봇(AMR), AI 비전 검사 시스템의 공정 적합성 사전 검증',
+          '1:1 맞춤형 기술지도 및 제조 데이터 표준화 지원'
+        ],
+        details: '산업통상자원부 주관 대형 사업으로 2028년까지 280억 원을 투입합니다. 기존 제조 라인에 AI와 협동로봇을 안전하고 빠르게 적용할 수 있도록 대학 내 실증 오픈랩 테스트베드를 제공하여 불량률 감소 및 생산성 극대화를 달성합니다.'
+      },
+      {
+        id: 'alchemist-diamond',
+        title: '다이아몬드 기반 우주용 극한 환경 반도체 원천기술 개발',
+        category: 'semiconductor',
+        categoryLabel: '차세대 반도체',
+        scale: '총 201억 원 규모 (산업기술 알키미스트 프로젝트)',
+        lead: '남옥현 교수 연구팀',
+        summary: '방사선, 초고온 등 극한 우주 환경을 견디는 다이아몬드 소재 기반 초고내방사선 차세대 전력·통신 반도체 소자 기술.',
+        highlights: [
+          '국제학회 APWS 등 유수 학회 우수구두발표상 연속 수상',
+          '기존 실리콘(Si) 및 질화갈륨(GaN) 한계를 뛰어넘는 다이아몬드 물성 규명',
+          '국방·항공우주 위성용 핵심 소자 국산화 기여'
+        ],
+        details: '산업통상자원부의 최고 난도 R&D인 알키미스트 프로젝트를 5년간 총괄 수행하고 있습니다. 초고온·고방사선 우주 환경에서도 성능 저하 없이 동작하는 울트라 와이드 밴드갭(UWBG) 다이아몬드 반도체 결함 제어 및 에피택시 성장 기술을 확보했습니다.'
+      },
+      {
+        id: 'tlo-laser',
+        title: 'AI 기반 레이저 스펙클(Speckle) 노이즈 저감 기술이전',
+        category: 'transfer',
+        categoryLabel: '중대형 기술이전',
+        scale: '기술이전 계약 체결 (TLO 혁신형 사업)',
+        lead: '광학·전자 융합 연구팀',
+        summary: '레이저 광학 디스플레이 및 정밀 계측 시 발생하는 산란 노이즈를 AI 딥러닝 알고리즘으로 실시간 제거하는 원천 특허 기술.',
+        highlights: [
+          '브라이튼코퍼레이션 등 광학 전문기업에 선급기술료 및 경상로열티 계약',
+          '정밀 비전 검사 및 차세대 HUD(헤드업 디스플레이) 해상도 40% 향상',
+          '사후 기술지도 및 공동 후속 R&D 전주기 지원'
+        ],
+        details: '과기정통부 TLO혁신형 사업의 대표 성과로, 산업용 고출력 레이저 조사 시 나타나는 불규칙한 빛 간섭 노이즈를 지능형 신경망으로 필터링하는 알고리즘을 사업화했습니다.'
+      },
+      {
+        id: 'tlo-os',
+        title: '운영체제 이중화 및 데이터 무중단 자동 복구 시스템',
+        category: 'transfer',
+        categoryLabel: '중대형 기술이전',
+        scale: '선급기술료 계약 체결 (TLO 혁신형 사업)',
+        lead: '컴퓨터공학부 연구팀',
+        summary: '스마트팩토리 및 엣지 컨트롤러 장애 시 0.1초 내 백업 OS로 즉시 전환되는 장애 격리 및 무손실 데이터 복구 기술.',
+        highlights: [
+          '티데이트 등 시스템 인프라 전문 기업 기술이전',
+          '공장 셧다운(Shut-down) 리스크 90% 이상 예방',
+          '창업보육센터 연계 및 특허 포트폴리오 강화 지원'
+        ],
+        details: '제조 현장의 산업용 PC 및 IoT 단말기가 바이러스나 하드웨어 손상으로 마비되는 문제를 하드웨어 레벨의 이중화 아키텍처와 경량 복구 알고리즘으로 해결했습니다.'
+      },
+      {
+        id: 'anchor-ce',
+        title: '지역사회참여(CE) 교과 기반 지산학 정책 숙성 플랫폼',
+        category: 'bio-ce',
+        categoryLabel: '지산학 · 바이오',
+        scale: '2026 산학연협력 EXPO 한국연구재단 이사장상 (우수상)',
+        lead: '한국공학대학교 앵커(Anchor) 사업단',
+        summary: '6년간 6,200여 명의 학생이 참여하여 3,100건 이상의 지역 산업 및 지자체 현안 해결 아이디어를 발굴하고 실책으로 연계.',
+        highlights: [
+          '교육부·연구재단 주관 전국 경진대회 최우수 성과 인정',
+          '시흥시 및 반월시화 산단 환경·교통·스마트 제조 애로 해결',
+          '학생 캡스톤디자인-기업 문제해결형(PBL)의 성공적 표준화 모델'
+        ],
+        details: '학생들의 전공 역량과 산업계의 실제 문제를 연결하는 산학융합 교육 플랫폼으로, 대학이 상아탑을 넘어 지역 경제와 제조업의 싱크탱크 역할을 주도함을 입증했습니다.'
+      },
+      {
+        id: 'wearable-digital-twin',
+        title: '웨어러블 모션캡처 기반 디지털 트윈 트레이닝 시스템',
+        category: 'bio-ce',
+        categoryLabel: '지산학 · 바이오',
+        scale: '2026 산학연협력 EXPO 현장 시연작',
+        lead: '바이오·스마트헬스케어 연구팀',
+        summary: '인체 관절 센서와 가상 트윈을 연동하여 작업자의 근골격계 부하 분석 및 재활 트레이닝을 실시간 가이드하는 헬스케어 솔루션.',
+        highlights: [
+          '산단 근로자 특화 맞춤형 동작 보정 및 부상 방지',
+          '고정밀 관성센서(IMU) 융합 모션 트래킹 기술',
+          '의료·스포츠·국방 훈련 시뮬레이터로의 확장성'
+        ],
+        details: '산업 현장 작업자의 잘못된 자세를 실시간으로 교정하여 산업재해를 예방하고, 재활 헬스케어 기기와 연동할 수 있는 융복합 연구 성과입니다.'
+      }
+    ];
+
+    let currentCategory = 'all';
+
+    // Render Cards in Clean Style
+    function renderCards(data) {
+      const container = document.getElementById('researchGrid');
+      if (data.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-16 text-center text-slate-400">
+            <i data-lucide="search-x" class="w-10 h-10 mx-auto mb-2 opacity-50"></i>
+            <p class="text-sm font-semibold text-slate-600">검색 조건에 맞는 연구 성과가 없습니다.</p>
+            <p class="text-xs text-slate-400 mt-1">다른 키워드나 '전체' 카테고리를 선택해 보세요.</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      container.innerHTML = data.map(item => `
+        <div class="card-clean rounded-2xl p-6 flex flex-col justify-between group">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-[11px] font-semibold px-2.5 py-1 rounded-md bg-slate-100 text-slate-700">
+                ${item.categoryLabel}
+              </span>
+              <span class="text-[11px] text-slate-400 font-medium">한국공학대</span>
+            </div>
+            
+            <h3 class="text-base sm:text-lg font-bold text-slate-900 group-hover:text-blue-600 transition leading-snug">
+              ${item.title}
+            </h3>
+
+            <div class="mt-2.5 text-xs font-semibold text-blue-600 flex items-center gap-1.5">
+              <i data-lucide="award" class="w-3.5 h-3.5 flex-shrink-0"></i>
+              <span class="truncate">${item.scale}</span>
+            </div>
+
+            <p class="text-xs text-slate-600 mt-3 leading-relaxed line-clamp-3">
+              ${item.summary}
+            </p>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[11px] text-slate-500 font-medium truncate max-w-[140px]">
+              ${item.lead}
+            </span>
+            <button onclick="openModal('${item.id}')" class="inline-flex items-center gap-1 text-xs font-bold text-blue-600 hover:text-blue-700 transition">
+              상세보기 <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function filterCategory(category) {
+      currentCategory = category;
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        if (btn.dataset.category === category) {
+          btn.className = 'filter-btn active px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-white transition shadow-sm';
+        } else {
+          btn.className = 'filter-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition';
+        }
+      });
+      filterResearch();
+    }
+
+    function filterResearch() {
+      const query = document.getElementById('searchInput').value.trim().toLowerCase();
+      let filtered = researchData;
+
+      if (currentCategory !== 'all') {
+        filtered = filtered.filter(item => item.category === currentCategory);
+      }
+
+      if (query) {
+        filtered = filtered.filter(item => 
+          item.title.toLowerCase().includes(query) ||
+          item.summary.toLowerCase().includes(query) ||
+          item.lead.toLowerCase().includes(query) ||
+          item.categoryLabel.toLowerCase().includes(query) ||
+          item.highlights.some(h => h.toLowerCase().includes(query))
+        );
+      }
+
+      renderCards(filtered);
+    }
+
+    function openModal(id) {
+      const item = researchData.find(d => d.id === id);
+      if (!item) return;
+
+      const modalContent = document.getElementById('modalContent');
+      modalContent.innerHTML = `
+        <div class="space-y-5">
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] font-semibold px-2.5 py-1 rounded-md bg-slate-100 text-slate-700">
+              ${item.categoryLabel}
+            </span>
+            <span class="text-xs text-blue-600 font-semibold">${item.scale}</span>
+          </div>
+
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 leading-snug">
+            ${item.title}
+          </h2>
+
+          <div class="p-3 bg-slate-50 border border-slate-200/80 rounded-xl flex items-center justify-between text-xs">
+            <span class="text-slate-500 font-medium">연구책임 / 총괄:</span>
+            <span class="font-bold text-slate-800">${item.lead}</span>
+          </div>
+
+          <div>
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">연구 및 사업 개요</h4>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed bg-blue-50/40 p-4 rounded-xl border border-blue-100/70">
+              ${item.details}
+            </p>
+          </div>
+
+          <div>
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">주요 하이라이트</h4>
+            <ul class="space-y-2">
+              ${item.highlights.map(h => `
+                <li class="flex items-start gap-2 text-xs text-slate-700">
+                  <i data-lucide="check" class="w-3.5 h-3.5 text-blue-600 mt-0.5 flex-shrink-0"></i>
+                  <span>${h}</span>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+
+          <div class="pt-4 border-t border-slate-100 flex justify-end gap-2">
+            <button onclick="closeModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">닫기</button>
+            <button onclick="closeModal(); openInquiryModal();" class="px-4 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition shadow-sm">이 연구 관련 문의하기</button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('detailModal').classList.remove('hidden');
+      document.getElementById('detailModal').classList.add('flex');
+      lucide.createIcons();
+    }
+
+    function closeModal() {
+      document.getElementById('detailModal').classList.add('hidden');
+      document.getElementById('detailModal').classList.remove('flex');
+    }
+
+    function openInquiryModal() {
+      document.getElementById('inquiryForm').classList.remove('hidden');
+      document.getElementById('inquirySuccess').classList.add('hidden');
+      document.getElementById('inquiryModal').classList.remove('hidden');
+      document.getElementById('inquiryModal').classList.add('flex');
+    }
+
+    function closeInquiryModal() {
+      document.getElementById('inquiryModal').classList.add('hidden');
+      document.getElementById('inquiryModal').classList.remove('flex');
+    }
+
+    function submitInquiry(e) {
+      e.preventDefault();
+      document.getElementById('inquiryForm').classList.add('hidden');
+      document.getElementById('inquirySuccess').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function initChart() {
+      const ctx = document.getElementById('rdTrendChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['2023', '2024', '2025', '2026 (현재)'],
+          datasets: [
+            {
+              label: '국책 R&D 수주액 (억 원)',
+              data: [510, 640, 780, 890],
+              backgroundColor: '#1e40af',
+              borderRadius: 6
+            },
+            {
+              label: '민간 기술이전 및 산학 공동연구 (억 원)',
+              data: [45, 62, 85, 115],
+              backgroundColor: '#38bdf8',
+              borderRadius: 6
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: {
+                boxWidth: 10,
+                boxHeight: 10,
+                font: { family: 'Pretendard', size: 11 }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: { color: '#f1f5f9' },
+              ticks: { font: { family: 'Pretendard', size: 10 } }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { font: { family: 'Pretendard', size: 11 } }
+            }
+          }
+        }
+      });
+    }
+
+    window.addEventListener('click', (e) => {
+      const modal = document.getElementById('detailModal');
+      const inqModal = document.getElementById('inquiryModal');
+      if (e.target === modal) closeModal();
+      if (e.target === inqModal) closeInquiryModal();
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCards(researchData);
+      initChart();
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>
